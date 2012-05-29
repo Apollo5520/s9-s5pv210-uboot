@@ -1,0 +1,959 @@
+/*
+ * (C) Copyright 2003
+ * David Müller ELSOFT AG Switzerland. d.mueller@elsoft.ch
+ *
+ * See file CREDITS for list of people who contributed to this
+ * project.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ * MA 02111-1307 USA
+ */
+
+/************************************************
+ * NAME	    : S5PC11X.h
+ * Version  : 31.3.2003
+ *
+ * common stuff for SAMSUNG S5PC11X SoC
+ ************************************************/
+
+#ifndef __S5PC11X_H__
+#define __S5PC11X_H__
+
+#include <common.h>
+typedef vu_char		S5PC11X_REG8;
+typedef vu_short	S5PC11X_REG16;
+typedef vu_long		S5PC11X_REG32;
+
+/* Memory controller (see manual chapter 5) */
+typedef struct {
+	S5PC11X_REG32	BWSCON;
+	S5PC11X_REG32	BANKCON[8];
+	S5PC11X_REG32	REFRESH;
+	S5PC11X_REG32	BANKSIZE;
+	S5PC11X_REG32	MRSRB6;
+	S5PC11X_REG32	MRSRB7;
+} /*__attribute__((__packed__))*/ S5PC11X_MEMCTL;
+
+
+/* USB HOST (see manual chapter 12) */
+typedef struct {
+	S5PC11X_REG32	HcRevision;
+	S5PC11X_REG32	HcControl;
+	S5PC11X_REG32	HcCommonStatus;
+	S5PC11X_REG32	HcInterruptStatus;
+	S5PC11X_REG32	HcInterruptEnable;
+	S5PC11X_REG32	HcInterruptDisable;
+	S5PC11X_REG32	HcHCCA;
+	S5PC11X_REG32	HcPeriodCuttendED;
+	S5PC11X_REG32	HcControlHeadED;
+	S5PC11X_REG32	HcControlCurrentED;
+	S5PC11X_REG32	HcBulkHeadED;
+	S5PC11X_REG32	HcBuldCurrentED;
+	S5PC11X_REG32	HcDoneHead;
+	S5PC11X_REG32	HcRmInterval;
+	S5PC11X_REG32	HcFmRemaining;
+	S5PC11X_REG32	HcFmNumber;
+	S5PC11X_REG32	HcPeriodicStart;
+	S5PC11X_REG32	HcLSThreshold;
+	S5PC11X_REG32	HcRhDescriptorA;
+	S5PC11X_REG32	HcRhDescriptorB;
+	S5PC11X_REG32	HcRhStatus;
+	S5PC11X_REG32	HcRhPortStatus1;
+	S5PC11X_REG32	HcRhPortStatus2;
+} /*__attribute__((__packed__))*/ S5PC11X_USB_HOST;
+
+
+/* INTERRUPT (see manual chapter 14) */
+typedef struct {
+	S5PC11X_REG32	SRCPND;
+	S5PC11X_REG32	INTMOD;
+	S5PC11X_REG32	INTMSK;
+	S5PC11X_REG32	PRIORITY;
+	S5PC11X_REG32	INTPND;
+	S5PC11X_REG32	INTOFFSET;
+} /*__attribute__((__packed__))*/ S5PC11X_INTERRUPT;
+
+
+/* DMAS (see manual chapter 8) */
+typedef struct {
+	S5PC11X_REG32	DISRC;
+	S5PC11X_REG32	DIDST;
+	S5PC11X_REG32	DCON;
+	S5PC11X_REG32	DSTAT;
+	S5PC11X_REG32	DCSRC;
+	S5PC11X_REG32	DCDST;
+	S5PC11X_REG32	DMASKTRIG;
+} /*__attribute__((__packed__))*/ S5PC11X_DMA;
+
+typedef struct {
+	S5PC11X_DMA	dma[4];
+} /*__attribute__((__packed__))*/ S5PC11X_DMAS;
+
+
+/* CLOCK & POWER MANAGEMENT (see S3C2400 manual chapter 6) */
+/*                          (see S3C2410 manual chapter 7) */
+typedef struct {
+	S5PC11X_REG32	LOCKTIME;
+	S5PC11X_REG32	MPLLCON;
+	S5PC11X_REG32	UPLLCON;
+	S5PC11X_REG32	CLKCON;
+	S5PC11X_REG32	CLKSLOW;
+	S5PC11X_REG32	CLKDIVN;
+} /*__attribute__((__packed__))*/ S5PC11X_CLOCK_POWER;
+
+
+/* LCD CONTROLLER (see manual chapter 15) */
+typedef struct {
+    S5PC11X_REG32 VIDCON0;         // 0x00
+    S5PC11X_REG32 VIDCON1;         // 0x04
+    S5PC11X_REG32 VIDCON2;         // 0x08
+    S5PC11X_REG32 VIDCON3;         // 0x0c
+
+    S5PC11X_REG32 VIDTCON0;        // 0x10
+    S5PC11X_REG32 VIDTCON1;        // 0x14
+    S5PC11X_REG32 VIDTCON2;        // 0x18
+    S5PC11X_REG32 VIDTCON3;        // 0x1c
+
+    S5PC11X_REG32 WINCON0;         // 0x20
+    S5PC11X_REG32 WINCON1;         // 0x24
+    S5PC11X_REG32 WINCON2;         // 0x28
+    S5PC11X_REG32 WINCON3;         // 0x2c
+    S5PC11X_REG32 WINCON4;         // 0x30
+    S5PC11X_REG32 SHADOWCON;       // 0x34
+    S5PC11X_REG32 PAD1[2];         // 0x38~0x3f
+
+    S5PC11X_REG32 VIDOSD0A;        // 0x40
+    S5PC11X_REG32 VIDOSD0B;        // 0x44
+    S5PC11X_REG32 VIDOSD0C;        // 0x48
+    S5PC11X_REG32 PAD2[1];         // 0x4c
+
+    union{
+        struct {
+            S5PC11X_REG32  Reserved        :10;    //< RESERVED
+            S5PC11X_REG32  OSD_LeftTopX_F  :11;    //< Horizontal Screen Coordinate for LeftTop Pixel of OSD Image
+            S5PC11X_REG32  OSD_LeftTopY_F  :11;    //< Vertical Screen Coordinate for LeftTop Pixel of OSD Image
+        } VIDOSD1ABITFIELD;
+        S5PC11X_REG32 VIDOSD1A;        // 0x50
+    };
+    union{
+        struct {
+            S5PC11X_REG32  Reserved        :10;    //< RESERVED
+            S5PC11X_REG32  OSD_RightBotX_F :11;    //< Horizontal Screen Coordinate for RightBottom Pixel of OSD Image
+            S5PC11X_REG32  OSD_RightBotY_F :11;    //< Vertical Screen Coordinate for RightBottom Pixel of OSD Image
+        } VIDOSD1BBITFIELD;
+        S5PC11X_REG32 VIDOSD1B;        // 0x54
+    };
+    union{
+        struct {
+            S5PC11X_REG32  Reserved1       : 7;
+            S5PC11X_REG32  Reserved2       : 1;
+            S5PC11X_REG32  ALPHA0_R_H      : 4;
+            S5PC11X_REG32  ALPHA0_G_H      : 4;
+            S5PC11X_REG32  ALPHA0_B_H      : 4;
+            S5PC11X_REG32  ALPHA1_R_H      : 4;
+            S5PC11X_REG32  ALPHA1_G_H      : 4;
+            S5PC11X_REG32  ALPHA1_B_H      : 4;
+        } VIDOSD1CBITFIELD;
+        S5PC11X_REG32 VIDOSD1C;        // 0x58
+    };
+    union{
+        struct {
+            S5PC11X_REG32  Reserved1       : 6;    //< RESERVED
+            S5PC11X_REG32  Reserved2       : 2;    //< RESERVED (Should Be Zero)
+            S5PC11X_REG32  OSDSIZE         :24;    //< Window Size (Height*Width, in Number of Word)
+        } VIDOSD1DBITFIELD;
+        S5PC11X_REG32 VIDOSD1D;        // 0x5c
+    };
+    S5PC11X_REG32 VIDOSD2A;        // 0x60
+    S5PC11X_REG32 VIDOSD2B;        // 0x64
+    S5PC11X_REG32 VIDOSD2C;        // 0x68
+    S5PC11X_REG32 VIDOSD2D;        // 0x6c
+
+    S5PC11X_REG32 VIDOSD3A;        // 0x70
+    S5PC11X_REG32 VIDOSD3B;        // 0x74
+    S5PC11X_REG32 VIDOSD3C;        // 0x78
+    S5PC11X_REG32 PAD3[1];         // 0x7c
+
+    S5PC11X_REG32 VIDOSD4A;        // 0x80
+    S5PC11X_REG32 VIDOSD4B;        // 0x84
+    S5PC11X_REG32 VIDOSD4C;        // 0x88
+    S5PC11X_REG32 PAD4[5];         // 0x8c~0x9f
+
+    S5PC11X_REG32 VIDW00ADD0B0;    // 0xa0
+    S5PC11X_REG32 VIDW00ADD0B1;    // 0xa4
+    S5PC11X_REG32 VIDW01ADD0B0;    // 0xa8
+    S5PC11X_REG32 VIDW01ADD0B1;    // 0xac
+
+    S5PC11X_REG32 VIDW02ADD0B0;    // 0xb0
+    S5PC11X_REG32 VIDW02ADD0B1;    // 0xb4
+    S5PC11X_REG32 VIDW03ADD0B0;    // 0xb8
+    S5PC11X_REG32 VIDW03ADD0B1;    // 0xbc
+
+    S5PC11X_REG32 VIDW04ADD0B0;    // 0xc0
+    S5PC11X_REG32 VIDW04ADD0B1;    // 0xc4
+    S5PC11X_REG32 PAD5[2];         // 0xc8~0xcf
+
+    S5PC11X_REG32 VIDW00ADD1B0;    // 0xd0
+    S5PC11X_REG32 VIDW00ADD1B1;    // 0xd4
+    S5PC11X_REG32 VIDW01ADD1B0;    // 0xd8
+    S5PC11X_REG32 VIDW01ADD1B1;    // 0xdc
+
+    S5PC11X_REG32 VIDW02ADD1B0;    // 0xe0
+    S5PC11X_REG32 VIDW02ADD1B1;    // 0xe4
+    S5PC11X_REG32 VIDW03ADD1B0;    // 0xe8
+    S5PC11X_REG32 VIDW03ADD1B1;    // 0xec
+
+    S5PC11X_REG32 VIDW04ADD1B0;    // 0xf0
+    S5PC11X_REG32 VIDW04ADD1B1;    // 0xf4
+    S5PC11X_REG32 PAD6[2];         // 0xf8~0xff
+
+
+    S5PC11X_REG32 VIDW00ADD2;      // 0x100
+    S5PC11X_REG32 VIDW01ADD2;      // 0x104
+    S5PC11X_REG32 VIDW02ADD2;      // 0x108
+    S5PC11X_REG32 VIDW03ADD2;      // 0x10c
+    S5PC11X_REG32 VIDW04ADD2;      // 0x110
+    S5PC11X_REG32 PAD7[1];         // 0x114
+    S5PC11X_REG32 VP1TCON0;        // 0x118
+    S5PC11X_REG32 VP1TCON1;        // 0x11c
+
+    S5PC11X_REG32 PAD8[4];         // 0x120~0x12f
+
+    S5PC11X_REG32 VIDINTCON0;      // 0x130
+    S5PC11X_REG32 VIDINTCON1;      // 0x134
+    S5PC11X_REG32 PAD9[2];         // 0x138~0x13f
+
+    S5PC11X_REG32 W1KEYCON0;       // 0x140
+    S5PC11X_REG32 W1KEYCON1;       // 0x144
+    S5PC11X_REG32 W2KEYCON0;       // 0x148
+    S5PC11X_REG32 W2KEYCON1;       // 0x14c
+    S5PC11X_REG32 W3KEYCON0;       // 0x150
+    S5PC11X_REG32 W3KEYCON1;       // 0x154
+    S5PC11X_REG32 W4KEYCON0;       // 0x158
+    S5PC11X_REG32 W4KEYCON1;       // 0x15c
+
+    S5PC11X_REG32 W1KEYALPHA;      // 0x160
+    S5PC11X_REG32 W2KEYALPHA;      // 0x164
+    S5PC11X_REG32 W3KEYALPHA;      // 0x168
+    S5PC11X_REG32 W4KEYALPHA;      // 0x16C
+
+    S5PC11X_REG32 DITHMODE;        // 0x170
+    S5PC11X_REG32 PAD10[3];        // 0x174~0x17f
+
+    S5PC11X_REG32 WIN0MAP;         // 0x180
+    S5PC11X_REG32 WIN1MAP;         // 0x184
+    S5PC11X_REG32 WIN2MAP;         // 0x188
+    S5PC11X_REG32 WIN3MAP;         // 0x18c
+    S5PC11X_REG32 WIN4MAP;         // 0x190
+    S5PC11X_REG32 PAD11[2];        // 0x194~0x19b
+    S5PC11X_REG32 WPALCON_H;       // 0x19c
+    S5PC11X_REG32 WPALCON_L;       // 0x1a0
+
+    union
+    {
+        struct
+        {
+            S5PC11X_REG32  RESERVED1       :5;
+            S5PC11X_REG32  SWTRGCMD_W4BUF  :1;
+            S5PC11X_REG32  TRGMODE_W4BUF   :1;
+            S5PC11X_REG32  RESERVED2       :2;
+            S5PC11X_REG32  SWTRGCMD_W3BUF  :1;
+            S5PC11X_REG32  TRGMODE_W3BUF   :1;
+            S5PC11X_REG32  RESERVED3       :2;
+            S5PC11X_REG32  SWTRGCMD_W2BUF  :1;
+            S5PC11X_REG32  TRGMODE_W2BUF   :1;
+            S5PC11X_REG32  RESERVED4       :2;
+            S5PC11X_REG32  SWTRGCMD_W1BUF  :1;
+            S5PC11X_REG32  TRGMODE_W1BUF   :1;
+            S5PC11X_REG32  RESERVED5       :2;
+            S5PC11X_REG32  SWTRGCMD_W0BUF  :1;
+            S5PC11X_REG32  TRGMODE_W0BUF   :1;
+            S5PC11X_REG32  RESERVED6       :2;
+            S5PC11X_REG32  SWFRSTATUS_I80  :1;
+            S5PC11X_REG32  SWTRGCMD_I80    :1;
+            S5PC11X_REG32  TRGMODE_I80     :1;
+        } TRIGCONFIELD;
+        S5PC11X_REG32 TRIGCON;         // 0x1a4
+    };
+    union
+    {
+        struct
+        {
+            S5PC11X_REG32 RESERVED1    :7;
+            S5PC11X_REG32 SELVSYNC     :1;
+            S5PC11X_REG32 DLYVSYNC     :8;
+            S5PC11X_REG32 RESERVED2    :6;
+            S5PC11X_REG32 I656FIELD    :1;
+            S5PC11X_REG32 I656CLK      :1;
+            S5PC11X_REG32 RESERVED3    :1;
+            S5PC11X_REG32 I601HREF     :1;
+            S5PC11X_REG32 I601VSYNC    :1;
+            S5PC11X_REG32 I601HSYNC    :1;
+            S5PC11X_REG32 I601FIELD    :1;
+            S5PC11X_REG32 I601CLK      :1;
+            S5PC11X_REG32 RESERVED4    :2;
+        }ITUIFCONFIELD;
+        S5PC11X_REG32 ITUIFCON;        // 0x1a8
+    };
+    S5PC11X_REG32 PAD12[1];        // 0x1ac
+
+    union
+    {
+        struct
+        {
+            S5PC11X_REG32 RESERVED1    :12;
+            S5PC11X_REG32 LCD_CS_SETUP :4;
+            S5PC11X_REG32 LCD_WR_SETUP :4;
+            S5PC11X_REG32 LCD_WR_ACT   :4;
+            S5PC11X_REG32 LCD_WR_HOLD  :4;
+            S5PC11X_REG32 RESERVED2    :1;
+            S5PC11X_REG32 RSPOL        :1;
+            S5PC11X_REG32 RESERVED3    :1;
+            S5PC11X_REG32 I80IFEN      :1;
+        }I80IFCONA0FIELD;
+        S5PC11X_REG32 I80IFCONA0;      // 0x1b0
+    };
+    union
+    {
+        struct
+        {
+            S5PC11X_REG32 RESERVED1    :12;
+            S5PC11X_REG32 LCD_CS_SETUP :4;
+            S5PC11X_REG32 LCD_WR_SETUP :4;
+            S5PC11X_REG32 LCD_WR_ACT   :4;
+            S5PC11X_REG32 LCD_WR_HOLD  :4;
+            S5PC11X_REG32 RESERVED2    :1;
+            S5PC11X_REG32 RSPOL        :1;
+            S5PC11X_REG32 RESERVED3    :1;
+            S5PC11X_REG32 I80IFEN      :1;
+        }I80IFCONA1FIELD;
+        S5PC11X_REG32 I80IFCONA1;      // 0x1b4
+    };
+    union
+    {
+        struct
+        {
+            S5PC11X_REG32 RESERVED1        :22;
+            S5PC11X_REG32 NORMAL_CMD_ST    :1;
+            S5PC11X_REG32 RESERVED2        :2;
+            S5PC11X_REG32 FRAME_SKIP       :2;
+            S5PC11X_REG32 RESERVED3        :1;
+            S5PC11X_REG32 AUTO_CMD_RATE    :4;
+        }I80IFCONB0FIELD;
+       S5PC11X_REG32 I80IFCONB0;      // 0x1b8
+    };
+    union
+    {
+        struct
+        {
+            S5PC11X_REG32 RESERVED1        :22;
+            S5PC11X_REG32 NORMAL_CMD_ST    :1;
+            S5PC11X_REG32 RESERVED2        :2;
+            S5PC11X_REG32 FRAME_SKIP       :2;
+            S5PC11X_REG32 RESERVED3        :1;
+            S5PC11X_REG32 AUTO_CMD_RATE    :4;
+        }I80IFCONB1FIELD;
+       S5PC11X_REG32 I80IFCONB1;      // 0x1bc
+    };
+
+    S5PC11X_REG32 COLORGAINCON;    // 0x1c0
+    S5PC11X_REG32 VESFRCON0;       // 0x1c4
+    union
+    {
+        struct
+        {
+            S5PC11X_REG32  VE_VSIZE_F      :11;
+            S5PC11X_REG32  VE_HSIZE_F      :11;
+            S5PC11X_REG32  VE_MUXSEL_F     :2;
+            S5PC11X_REG32  VE_OVCHECK_F    :1;
+            S5PC11X_REG32  RESERVED        :7;
+        } VESFRCON1FIELD;
+        S5PC11X_REG32 VESFRCON1;       // 0x1c8
+    };
+    S5PC11X_REG32 VESFRCON2;       // 0x1cc
+
+    S5PC11X_REG32 LDI_CMDCON0;     // 0x1d0
+    S5PC11X_REG32 LDI_CMDCON1;     // 0x1d4
+    S5PC11X_REG32 PAD13[2];        // 0x1d8~0x1df
+
+    S5PC11X_REG32 SIFCCON0;        // 0x1e0
+    S5PC11X_REG32 SIFCCON1;        // 0x1e4
+    S5PC11X_REG32 SIFCCON2;        // 0x1e8
+
+    S5PC11X_REG32 HUECOEF00;       // 0x1ec
+    S5PC11X_REG32 HUECOEF01;       // 0x1f0
+    S5PC11X_REG32 HUECOEF10;       // 0x1f4
+    S5PC11X_REG32 HUECOEF11;       // 0x1f8
+    S5PC11X_REG32 HUEOFFSET;       // 0x1fc
+
+    S5PC11X_REG32 VIDW0ALPHA0;     // 0x200
+    S5PC11X_REG32 VIDW0ALPHA1;     // 0x204
+    S5PC11X_REG32 VIDW1ALPHA0;     // 0x208
+    S5PC11X_REG32 VIDW1ALPHA1;     // 0x20c
+
+    S5PC11X_REG32 VIDW2ALPHA0;     // 0x210
+    S5PC11X_REG32 VIDW2ALPHA1;     // 0x214
+    S5PC11X_REG32 VIDW3ALPHA0;     // 0x218
+    S5PC11X_REG32 VIDW3ALPHA1;     // 0x21c
+
+    S5PC11X_REG32 VIDW4ALPHA0;     // 0x220
+    S5PC11X_REG32 VIDW4ALPHA1;     // 0x224
+
+    S5PC11X_REG32 PAD14[7];        // 0x228~0x243
+
+    S5PC11X_REG32 BLENDEQ1;        // 0x244
+    S5PC11X_REG32 BLENDEQ2;        // 0x248
+    S5PC11X_REG32 BLENDEQ3;        // 0x24c
+    S5PC11X_REG32 BLENDEQ4;        // 0x250
+    S5PC11X_REG32 PAD15[3];        // 0x254~0x25f
+    S5PC11X_REG32 BLENDCON;        // 0x260
+
+    S5PC11X_REG32 W0RTQOSCON;      // 0x264
+    S5PC11X_REG32 W1RTQOSCON;      // 0x268
+    S5PC11X_REG32 W2RTQOSCON;      // 0x26c
+    S5PC11X_REG32 W3RTQOSCON;      // 0x270
+    S5PC11X_REG32 W4RTQOSCON;      // 0x274
+    S5PC11X_REG32 GPOUTCON0;       // 0x278
+    S5PC11X_REG32 DUALCON;         // 0x27c
+
+    S5PC11X_REG32 LDI_CMD0;        // 0x280
+    S5PC11X_REG32 LDI_CMD1;        // 0x284
+    S5PC11X_REG32 LDI_CMD2;        // 0x288
+    S5PC11X_REG32 LDI_CMD3;        // 0x28c
+
+    S5PC11X_REG32 LDI_CMD4;        // 0x290
+    S5PC11X_REG32 LDI_CMD5;        // 0x294
+    S5PC11X_REG32 LDI_CMD6;        // 0x298
+    S5PC11X_REG32 LDI_CMD7;        // 0x29c
+
+    S5PC11X_REG32 LDI_CMD8;        // 0x2a0
+    S5PC11X_REG32 LDI_CMD9;        // 0x2a4
+    S5PC11X_REG32 LDI_CMD10;       // 0x2a8
+    S5PC11X_REG32 LDI_CMD11;       // 0x2ac
+
+    S5PC11X_REG32 PAD17[51];       // 0x2b0~0x37b
+
+    S5PC11X_REG32 GAMMALUT_01_00;  // 0x37c
+    S5PC11X_REG32 GAMMALUT_03_02;  // 0x380
+    S5PC11X_REG32 GAMMALUT_05_04;  // 0x384
+    S5PC11X_REG32 GAMMALUT_07_06;  // 0x388
+    S5PC11X_REG32 GAMMALUT_09_08;  // 0x38c
+    S5PC11X_REG32 GAMMALUT_11_10;  // 0x390
+    S5PC11X_REG32 GAMMALUT_13_12;  // 0x394
+    S5PC11X_REG32 GAMMALUT_15_14;  // 0x398
+    S5PC11X_REG32 GAMMALUT_17_16;  // 0x39c
+    S5PC11X_REG32 GAMMALUT_19_18;  // 0x3a0
+    S5PC11X_REG32 GAMMALUT_21_20;  // 0x3a4
+    S5PC11X_REG32 GAMMALUT_23_22;  // 0x3a8
+    S5PC11X_REG32 GAMMALUT_25_24;  // 0x3ac
+    S5PC11X_REG32 GAMMALUT_27_26;  // 0x3b0
+    S5PC11X_REG32 GAMMALUT_29_28;  // 0x3b4
+    S5PC11X_REG32 GAMMALUT_31_30;  // 0x3b8
+    S5PC11X_REG32 GAMMALUT_33_32;  // 0x3bc
+    S5PC11X_REG32 GAMMALUT_35_34;  // 0x3c0
+    S5PC11X_REG32 GAMMALUT_37_36;  // 0x3c4
+    S5PC11X_REG32 GAMMALUT_39_38;  // 0x3c8
+    S5PC11X_REG32 GAMMALUT_41_40;  // 0x3cc
+    S5PC11X_REG32 GAMMALUT_43_42;  // 0x3d0
+    S5PC11X_REG32 GAMMALUT_45_44;  // 0x3d4
+    S5PC11X_REG32 GAMMALUT_47_46;  // 0x3d8
+    S5PC11X_REG32 GAMMALUT_49_48;  // 0x3dc
+    S5PC11X_REG32 GAMMALUT_51_50;  // 0x3e0
+    S5PC11X_REG32 GAMMALUT_53_52;  // 0x3e4
+    S5PC11X_REG32 GAMMALUT_55_54;  // 0x3e8
+    S5PC11X_REG32 GAMMALUT_57_56;  // 0x3ec
+    S5PC11X_REG32 GAMMALUT_59_58;  // 0x3f0
+    S5PC11X_REG32 GAMMALUT_61_60;  // 0x3f4
+    S5PC11X_REG32 GAMMALUT_63_62;  // 0x3f8
+    S5PC11X_REG32 GAMMALUT_xx_64;  // 0x3fc
+
+    S5PC11X_REG32 PAD18[1832];     // 0x400 ~ 0x209f
+
+    S5PC11X_REG32 VIDW00ADD0B2;    // 0x20a0
+    S5PC11X_REG32 PAD19[1];        // 0x20a4
+    S5PC11X_REG32 VIDW01ADD0B2;    // 0x20a8
+    S5PC11X_REG32 PAD20[1];        // 0x20ac
+    S5PC11X_REG32 VIDW02ADD0B2;    // 0x20b0
+    S5PC11X_REG32 PAD21[1];        // 0x20b4
+    S5PC11X_REG32 VIDW03ADD0B2;    // 0x20b8
+    S5PC11X_REG32 PAD22[1];        // 0x20bc
+    S5PC11X_REG32 VIDW04ADD0B2;    // 0x20c0
+
+    S5PC11X_REG32 PAD23[3];        // 0x20c4~0x20cf
+
+    S5PC11X_REG32 VIDW00ADD1B2;    // 0x20d0
+    S5PC11X_REG32 PAD24[1];        // 0x20d4
+    S5PC11X_REG32 VIDW01ADD1B2;    // 0x20d8
+    S5PC11X_REG32 PAD25[1];        // 0x20dc
+    S5PC11X_REG32 VIDW02ADD1B2;    // 0x20e0
+    S5PC11X_REG32 PAD26[1];        // 0x20e4
+    S5PC11X_REG32 VIDW03ADD1B2;    // 0x20e8
+    S5PC11X_REG32 PAD27[1];        // 0x20ec
+    S5PC11X_REG32 VIDW04ADD1B2;    // 0x20f0
+
+    S5PC11X_REG32 PAD28[2027];     // 0x20f4~0x409f
+
+    S5PC11X_REG32 SHD_VIDW00ADD0;  // 0x40a0
+    S5PC11X_REG32 PAD29[1];        // 0x40a4
+    S5PC11X_REG32 SHD_VIDW01ADD0;  // 0x40a8
+    S5PC11X_REG32 PAD30[1];        // 0x40ac
+    S5PC11X_REG32 SHD_VIDW02ADD0;  // 0x40b0
+    S5PC11X_REG32 PAD31[1];        // 0x40b4
+    S5PC11X_REG32 SHD_VIDW03ADD0;  // 0x40b8
+    S5PC11X_REG32 PAD32[1];        // 0x40bc
+    S5PC11X_REG32 SHD_VIDW04ADD0;  // 0x40c0
+
+    S5PC11X_REG32 PAD33[3];        // 0x40c4~0x40cf
+
+    S5PC11X_REG32 SHD_VIDW00ADD1;  // 0x40d0
+    S5PC11X_REG32 PAD34[1];        // 0x40d4
+    S5PC11X_REG32 SHD_VIDW01ADD1;  // 0x40d8
+    S5PC11X_REG32 PAD35[1];        // 0x40dc
+    S5PC11X_REG32 SHD_VIDW02ADD1;  // 0x40e0
+    S5PC11X_REG32 PAD36[1];        // 0x40e4
+    S5PC11X_REG32 SHD_VIDW03ADD1;  // 0x40e8
+    S5PC11X_REG32 PAD37[1];        // 0x40ec
+    S5PC11X_REG32 SHD_VIDW04ADD1;  // 0x40f0
+
+    S5PC11X_REG32 PAD38[3];        // 0x40f4~0x40ff
+
+    S5PC11X_REG32 SHD_VIDW00ADD2;  // 0x4100
+    S5PC11X_REG32 SHD_VIDW01ADD2;  // 0x4104
+    S5PC11X_REG32 SHD_VIDW02ADD2;  // 0x4108
+    S5PC11X_REG32 SHD_VIDW03ADD2;  // 0x410c
+    S5PC11X_REG32 SHD_VIDW04ADD2;  // 0x4110
+
+    S5PC11X_REG32 PAD39[(0x4800-0x4114)/4];    //0x4114~0x47ff
+
+    S5PC11X_REG32 VELUT1_00[(0x400)/4];  // 0x4800~0x4Bff
+
+    S5PC11X_REG32 PAD40[(0x5000-0x4C00)/4];    //0x4C00~0x4fff
+
+    S5PC11X_REG32 VELUT2_000[(0x800)/4];  // 0x5000~0x57fc
+} /*__attribute__((__packed__))*/ S5PC11X_LCD;
+
+
+/* NAND FLASH (see S3C2410 manual chapter 6) */
+typedef struct {
+	S5PC11X_REG32	NFCONF;
+	S5PC11X_REG32	NFCMD;
+	S5PC11X_REG32	NFADDR;
+	S5PC11X_REG32	NFDATA;
+	S5PC11X_REG32	NFSTAT;
+	S5PC11X_REG32	NFECC;
+} /*__attribute__((__packed__))*/ S3C2410_NAND;
+
+
+/* UART (see manual chapter 11) */
+typedef struct {
+	S5PC11X_REG32	ULCON;
+	S5PC11X_REG32	UCON;
+	S5PC11X_REG32	UFCON;
+	S5PC11X_REG32	UMCON;
+	S5PC11X_REG32	UTRSTAT;
+	S5PC11X_REG32	UERSTAT;
+	S5PC11X_REG32	UFSTAT;
+	S5PC11X_REG32	UMSTAT;
+#ifdef __BIG_ENDIAN
+	S5PC11X_REG8	res1[3];
+	S5PC11X_REG8	UTXH;
+	S5PC11X_REG8	res2[3];
+	S5PC11X_REG8	URXH;
+#else /* Little Endian */
+	S5PC11X_REG8	UTXH;
+	S5PC11X_REG8	res1[3];
+	S5PC11X_REG8	URXH;
+	S5PC11X_REG8	res2[3];
+#endif
+	S5PC11X_REG32	UBRDIV;
+} /*__attribute__((__packed__))*/ S5PC11X_UART;
+
+
+/* PWM TIMER (see manual chapter 10) */
+typedef struct {
+	S5PC11X_REG32	TCNTB;
+	S5PC11X_REG32	TCMPB;
+	S5PC11X_REG32	TCNTO;
+} /*__attribute__((__packed__))*/ S5PC11X_TIMER;
+
+typedef struct {
+	S5PC11X_REG32	TCFG0;
+	S5PC11X_REG32	TCFG1;
+	S5PC11X_REG32	TCON;
+	S5PC11X_TIMER	ch[4];
+	S5PC11X_REG32	TCNTB4;
+	S5PC11X_REG32	TCNTO4;
+} /*__attribute__((__packed__))*/ S5PC11X_TIMERS;
+
+
+/* USB DEVICE (see manual chapter 13) */
+typedef struct {
+#ifdef __BIG_ENDIAN
+	S5PC11X_REG8	res[3];
+	S5PC11X_REG8	EP_FIFO_REG;
+#else /*  little endian */
+	S5PC11X_REG8	EP_FIFO_REG;
+	S5PC11X_REG8	res[3];
+#endif
+} /*__attribute__((__packed__))*/ S5PC11X_USB_DEV_FIFOS;
+
+typedef struct {
+#ifdef __BIG_ENDIAN
+	S5PC11X_REG8	res1[3];
+	S5PC11X_REG8	EP_DMA_CON;
+	S5PC11X_REG8	res2[3];
+	S5PC11X_REG8	EP_DMA_UNIT;
+	S5PC11X_REG8	res3[3];
+	S5PC11X_REG8	EP_DMA_FIFO;
+	S5PC11X_REG8	res4[3];
+	S5PC11X_REG8	EP_DMA_TTC_L;
+	S5PC11X_REG8	res5[3];
+	S5PC11X_REG8	EP_DMA_TTC_M;
+	S5PC11X_REG8	res6[3];
+	S5PC11X_REG8	EP_DMA_TTC_H;
+#else /*  little endian */
+	S5PC11X_REG8	EP_DMA_CON;
+	S5PC11X_REG8	res1[3];
+	S5PC11X_REG8	EP_DMA_UNIT;
+	S5PC11X_REG8	res2[3];
+	S5PC11X_REG8	EP_DMA_FIFO;
+	S5PC11X_REG8	res3[3];
+	S5PC11X_REG8	EP_DMA_TTC_L;
+	S5PC11X_REG8	res4[3];
+	S5PC11X_REG8	EP_DMA_TTC_M;
+	S5PC11X_REG8	res5[3];
+	S5PC11X_REG8	EP_DMA_TTC_H;
+	S5PC11X_REG8	res6[3];
+#endif
+} /*__attribute__((__packed__))*/ S5PC11X_USB_DEV_DMAS;
+
+typedef struct {
+#ifdef __BIG_ENDIAN
+	S5PC11X_REG8	res1[3];
+	S5PC11X_REG8	FUNC_ADDR_REG;
+	S5PC11X_REG8	res2[3];
+	S5PC11X_REG8	PWR_REG;
+	S5PC11X_REG8	res3[3];
+	S5PC11X_REG8	EP_INT_REG;
+	S5PC11X_REG8	res4[15];
+	S5PC11X_REG8	USB_INT_REG;
+	S5PC11X_REG8	res5[3];
+	S5PC11X_REG8	EP_INT_EN_REG;
+	S5PC11X_REG8	res6[15];
+	S5PC11X_REG8	USB_INT_EN_REG;
+	S5PC11X_REG8	res7[3];
+	S5PC11X_REG8	FRAME_NUM1_REG;
+	S5PC11X_REG8	res8[3];
+	S5PC11X_REG8	FRAME_NUM2_REG;
+	S5PC11X_REG8	res9[3];
+	S5PC11X_REG8	INDEX_REG;
+	S5PC11X_REG8	res10[7];
+	S5PC11X_REG8	MAXP_REG;
+	S5PC11X_REG8	res11[3];
+	S5PC11X_REG8	EP0_CSR_IN_CSR1_REG;
+	S5PC11X_REG8	res12[3];
+	S5PC11X_REG8	IN_CSR2_REG;
+	S5PC11X_REG8	res13[7];
+	S5PC11X_REG8	OUT_CSR1_REG;
+	S5PC11X_REG8	res14[3];
+	S5PC11X_REG8	OUT_CSR2_REG;
+	S5PC11X_REG8	res15[3];
+	S5PC11X_REG8	OUT_FIFO_CNT1_REG;
+	S5PC11X_REG8	res16[3];
+	S5PC11X_REG8	OUT_FIFO_CNT2_REG;
+#else /*  little endian */
+	S5PC11X_REG8	FUNC_ADDR_REG;
+	S5PC11X_REG8	res1[3];
+	S5PC11X_REG8	PWR_REG;
+	S5PC11X_REG8	res2[3];
+	S5PC11X_REG8	EP_INT_REG;
+	S5PC11X_REG8	res3[15];
+	S5PC11X_REG8	USB_INT_REG;
+	S5PC11X_REG8	res4[3];
+	S5PC11X_REG8	EP_INT_EN_REG;
+	S5PC11X_REG8	res5[15];
+	S5PC11X_REG8	USB_INT_EN_REG;
+	S5PC11X_REG8	res6[3];
+	S5PC11X_REG8	FRAME_NUM1_REG;
+	S5PC11X_REG8	res7[3];
+	S5PC11X_REG8	FRAME_NUM2_REG;
+	S5PC11X_REG8	res8[3];
+	S5PC11X_REG8	INDEX_REG;
+	S5PC11X_REG8	res9[7];
+	S5PC11X_REG8	MAXP_REG;
+	S5PC11X_REG8	res10[7];
+	S5PC11X_REG8	EP0_CSR_IN_CSR1_REG;
+	S5PC11X_REG8	res11[3];
+	S5PC11X_REG8	IN_CSR2_REG;
+	S5PC11X_REG8	res12[3];
+	S5PC11X_REG8	OUT_CSR1_REG;
+	S5PC11X_REG8	res13[7];
+	S5PC11X_REG8	OUT_CSR2_REG;
+	S5PC11X_REG8	res14[3];
+	S5PC11X_REG8	OUT_FIFO_CNT1_REG;
+	S5PC11X_REG8	res15[3];
+	S5PC11X_REG8	OUT_FIFO_CNT2_REG;
+	S5PC11X_REG8	res16[3];
+#endif /*  __BIG_ENDIAN */
+	S5PC11X_USB_DEV_FIFOS	fifo[5];
+	S5PC11X_USB_DEV_DMAS	dma[5];
+} /*__attribute__((__packed__))*/ S5PC11X_USB_DEVICE;
+
+
+/* WATCH DOG TIMER (see manual chapter 18) */
+typedef struct {
+	S5PC11X_REG32	WTCON;
+	S5PC11X_REG32	WTDAT;
+	S5PC11X_REG32	WTCNT;
+} /*__attribute__((__packed__))*/ S5PC11X_WATCHDOG;
+
+
+/* IIC (see manual chapter 20) */
+typedef struct {
+	S5PC11X_REG32	IICCON;
+	S5PC11X_REG32	IICSTAT;
+	S5PC11X_REG32	IICADD;
+	S5PC11X_REG32	IICDS;
+} /*__attribute__((__packed__))*/ S5PC11X_I2C;
+
+
+/* IIS (see manual chapter 21) */
+typedef struct {
+#ifdef __BIG_ENDIAN
+	S5PC11X_REG16	res1;
+	S5PC11X_REG16	IISCON;
+	S5PC11X_REG16	res2;
+	S5PC11X_REG16	IISMOD;
+	S5PC11X_REG16	res3;
+	S5PC11X_REG16	IISPSR;
+	S5PC11X_REG16	res4;
+	S5PC11X_REG16	IISFCON;
+	S5PC11X_REG16	res5;
+	S5PC11X_REG16	IISFIFO;
+#else /*  little endian */
+	S5PC11X_REG16	IISCON;
+	S5PC11X_REG16	res1;
+	S5PC11X_REG16	IISMOD;
+	S5PC11X_REG16	res2;
+	S5PC11X_REG16	IISPSR;
+	S5PC11X_REG16	res3;
+	S5PC11X_REG16	IISFCON;
+	S5PC11X_REG16	res4;
+	S5PC11X_REG16	IISFIFO;
+	S5PC11X_REG16	res5;
+#endif
+} /*__attribute__((__packed__))*/ S5PC11X_I2S;
+
+
+/* I/O PORT (see manual chapter 9) */
+typedef struct {
+
+} /*__attribute__((__packed__))*/ S5PC11X_GPIO;
+
+
+/* RTC (see manual chapter 17) */
+typedef struct {
+#ifdef __BIG_ENDIAN
+	S5PC11X_REG8	res1[67];
+	S5PC11X_REG8	RTCCON;
+	S5PC11X_REG8	res2[3];
+	S5PC11X_REG8	TICNT;
+	S5PC11X_REG8	res3[11];
+	S5PC11X_REG8	RTCALM;
+	S5PC11X_REG8	res4[3];
+	S5PC11X_REG8	ALMSEC;
+	S5PC11X_REG8	res5[3];
+	S5PC11X_REG8	ALMMIN;
+	S5PC11X_REG8	res6[3];
+	S5PC11X_REG8	ALMHOUR;
+	S5PC11X_REG8	res7[3];
+	S5PC11X_REG8	ALMDATE;
+	S5PC11X_REG8	res8[3];
+	S5PC11X_REG8	ALMMON;
+	S5PC11X_REG8	res9[3];
+	S5PC11X_REG8	ALMYEAR;
+	S5PC11X_REG8	res10[3];
+	S5PC11X_REG8	RTCRST;
+	S5PC11X_REG8	res11[3];
+	S5PC11X_REG8	BCDSEC;
+	S5PC11X_REG8	res12[3];
+	S5PC11X_REG8	BCDMIN;
+	S5PC11X_REG8	res13[3];
+	S5PC11X_REG8	BCDHOUR;
+	S5PC11X_REG8	res14[3];
+	S5PC11X_REG8	BCDDATE;
+	S5PC11X_REG8	res15[3];
+	S5PC11X_REG8	BCDDAY;
+	S5PC11X_REG8	res16[3];
+	S5PC11X_REG8	BCDMON;
+	S5PC11X_REG8	res17[3];
+	S5PC11X_REG8	BCDYEAR;
+#else /*  little endian */
+	S5PC11X_REG8	res0[64];
+	S5PC11X_REG8	RTCCON;
+	S5PC11X_REG8	res1[3];
+	S5PC11X_REG8	TICNT;
+	S5PC11X_REG8	res2[11];
+	S5PC11X_REG8	RTCALM;
+	S5PC11X_REG8	res3[3];
+	S5PC11X_REG8	ALMSEC;
+	S5PC11X_REG8	res4[3];
+	S5PC11X_REG8	ALMMIN;
+	S5PC11X_REG8	res5[3];
+	S5PC11X_REG8	ALMHOUR;
+	S5PC11X_REG8	res6[3];
+	S5PC11X_REG8	ALMDATE;
+	S5PC11X_REG8	res7[3];
+	S5PC11X_REG8	ALMMON;
+	S5PC11X_REG8	res8[3];
+	S5PC11X_REG8	ALMYEAR;
+	S5PC11X_REG8	res9[3];
+	S5PC11X_REG8	RTCRST;
+	S5PC11X_REG8	res10[3];
+	S5PC11X_REG8	BCDSEC;
+	S5PC11X_REG8	res11[3];
+	S5PC11X_REG8	BCDMIN;
+	S5PC11X_REG8	res12[3];
+	S5PC11X_REG8	BCDHOUR;
+	S5PC11X_REG8	res13[3];
+	S5PC11X_REG8	BCDDATE;
+	S5PC11X_REG8	res14[3];
+	S5PC11X_REG8	BCDDAY;
+	S5PC11X_REG8	res15[3];
+	S5PC11X_REG8	BCDMON;
+	S5PC11X_REG8	res16[3];
+	S5PC11X_REG8	BCDYEAR;
+	S5PC11X_REG8	res17[3];
+#endif
+} /*__attribute__((__packed__))*/ S5PC11X_RTC;
+
+
+/* ADC (see manual chapter 16) */
+typedef struct {
+	S5PC11X_REG32	ADCCON;
+	S5PC11X_REG32	ADCDAT;
+} /*__attribute__((__packed__))*/ S3C2400_ADC;
+
+
+/* ADC (see manual chapter 16) */
+typedef struct {
+	S5PC11X_REG32	ADCCON;
+	S5PC11X_REG32	ADCTSC;
+	S5PC11X_REG32	ADCDLY;
+	S5PC11X_REG32	ADCDAT0;
+	S5PC11X_REG32	ADCDAT1;
+} /*__attribute__((__packed__))*/ S3C2410_ADC;
+
+
+/* SPI (see manual chapter 22) */
+typedef struct {
+	S5PC11X_REG32	SPCON;
+	S5PC11X_REG32	SPSTA;
+	S5PC11X_REG32	SPPIN;
+	S5PC11X_REG32	SPPRE;
+	S5PC11X_REG32	SPTDAT;
+	S5PC11X_REG32	SPRDAT;
+	S5PC11X_REG32	res[2];
+} __attribute__((__packed__)) S5PC11X_SPI_CHANNEL;
+
+typedef struct {
+	S5PC11X_SPI_CHANNEL	ch[S5PC11X_SPI_CHANNELS];
+} /*__attribute__((__packed__))*/ S5PC11X_SPI;
+
+
+/* MMC INTERFACE (see S3C2400 manual chapter 19) */
+typedef struct {
+#ifdef __BIG_ENDIAN
+	S5PC11X_REG8	res1[3];
+	S5PC11X_REG8	MMCON;
+	S5PC11X_REG8	res2[3];
+	S5PC11X_REG8	MMCRR;
+	S5PC11X_REG8	res3[3];
+	S5PC11X_REG8	MMFCON;
+	S5PC11X_REG8	res4[3];
+	S5PC11X_REG8	MMSTA;
+	S5PC11X_REG16	res5;
+	S5PC11X_REG16	MMFSTA;
+	S5PC11X_REG8	res6[3];
+	S5PC11X_REG8	MMPRE;
+	S5PC11X_REG16	res7;
+	S5PC11X_REG16	MMLEN;
+	S5PC11X_REG8	res8[3];
+	S5PC11X_REG8	MMCR7;
+	S5PC11X_REG32	MMRSP[4];
+	S5PC11X_REG8	res9[3];
+	S5PC11X_REG8	MMCMD0;
+	S5PC11X_REG32	MMCMD1;
+	S5PC11X_REG16	res10;
+	S5PC11X_REG16	MMCR16;
+	S5PC11X_REG8	res11[3];
+	S5PC11X_REG8	MMDAT;
+#else
+	S5PC11X_REG8	MMCON;
+	S5PC11X_REG8	res1[3];
+	S5PC11X_REG8	MMCRR;
+	S5PC11X_REG8	res2[3];
+	S5PC11X_REG8	MMFCON;
+	S5PC11X_REG8	res3[3];
+	S5PC11X_REG8	MMSTA;
+	S5PC11X_REG8	res4[3];
+	S5PC11X_REG16	MMFSTA;
+	S5PC11X_REG16	res5;
+	S5PC11X_REG8	MMPRE;
+	S5PC11X_REG8	res6[3];
+	S5PC11X_REG16	MMLEN;
+	S5PC11X_REG16	res7;
+	S5PC11X_REG8	MMCR7;
+	S5PC11X_REG8	res8[3];
+	S5PC11X_REG32	MMRSP[4];
+	S5PC11X_REG8	MMCMD0;
+	S5PC11X_REG8	res9[3];
+	S5PC11X_REG32	MMCMD1;
+	S5PC11X_REG16	MMCR16;
+	S5PC11X_REG16	res10;
+	S5PC11X_REG8	MMDAT;
+	S5PC11X_REG8	res11[3];
+#endif
+} /*__attribute__((__packed__))*/ S3C2400_MMC;
+
+
+/* SD INTERFACE (see S3C2410 manual chapter 19) */
+typedef struct {
+	S5PC11X_REG32	SDICON;
+	S5PC11X_REG32	SDIPRE;
+	S5PC11X_REG32	SDICARG;
+	S5PC11X_REG32	SDICCON;
+	S5PC11X_REG32	SDICSTA;
+	S5PC11X_REG32	SDIRSP0;
+	S5PC11X_REG32	SDIRSP1;
+	S5PC11X_REG32	SDIRSP2;
+	S5PC11X_REG32	SDIRSP3;
+	S5PC11X_REG32	SDIDTIMER;
+	S5PC11X_REG32	SDIBSIZE;
+	S5PC11X_REG32	SDIDCON;
+	S5PC11X_REG32	SDIDCNT;
+	S5PC11X_REG32	SDIDSTA;
+	S5PC11X_REG32	SDIFSTA;
+#ifdef __BIG_ENDIAN
+	S5PC11X_REG8	res[3];
+	S5PC11X_REG8	SDIDAT;
+#else
+	S5PC11X_REG8	SDIDAT;
+	S5PC11X_REG8	res[3];
+#endif
+	S5PC11X_REG32	SDIIMSK;
+} /*__attribute__((__packed__))*/ S3C2410_SDI;
+
+#endif /*__S5PC11X_H__*/

@@ -1,0 +1,10 @@
+uboot source for s9
+Released under the GPL
+
+build:
+  make skdv210_config
+  make
+
+
+ApolloYang <Apollo5520@gmail.com>
+http://www.sekede.com
